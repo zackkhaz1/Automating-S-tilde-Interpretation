@@ -21,23 +21,30 @@ except FileNotFoundError as err:
 print('\n')
 
 
-###### Printing of dataframes for testing ######
-#print("Sorted data by S-tilde\n")
-#print(dataframe)
-#print('\n')
-#print("Sorted data by absolute value of S-tilde")
-#print(dataframe)
-#print('\n')
-#################
+dataframe.insert(3, 'Negative?', np.nan, False)
+dataframe = dataframe.astype({'Negative?': str})
+
+
+
+
+for i in range(len(dataframe.index)):
+    if(dataframe.at[i, 'S'] < 0):
+        dataframe.at[i, 'Negative?'] = 'Yes'
+    else:
+        dataframe.at[i, 'Negative?'] = 'No'
 
 
 dataframe['S'] = dataframe['S'].apply(abs)
 dataframe.sort_values(by='S', axis=0, inplace=True, ascending = False)
+print(dataframe)
+
+
+values = int(input("Enter the number of S-tilde values you'd like to have in the exported file\n"))
 
 newData = dataframe[list(dataframe.columns)].copy()
 
-newData = newData[:30]
-print("Top 30 s-tilde values")
+newData = newData[:values]
+print("Top ", values, " s-tilde values")
 print(newData)
 
 file = ""
